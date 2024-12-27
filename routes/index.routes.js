@@ -1,0 +1,15 @@
+import express from "express";
+import { Login, Signup } from "../controllers/user.controller.js";
+import adminRouter from "../routes/admin.routes.js";
+import userRouter from "../routes/user.routes.js";
+import upload from "../middlewares/multerConfig.js";
+import { getAllRooms, getRoomById } from "../controllers/room.controller.js";
+import { verifyAdmin, verifyToken } from "../middlewares/auth.js";
+const router = express.Router();
+router.post("/signup", upload.single("image"), Signup);
+router.post("/login", Login);
+router.use("/admin",verifyToken,verifyAdmin, adminRouter);
+router.use("/user", userRouter);
+router.use("/getAllRooms", getAllRooms);
+router.use("/getARoom/:id", getRoomById);
+export default router;
